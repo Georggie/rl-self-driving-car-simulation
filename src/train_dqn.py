@@ -6,6 +6,8 @@ from collections import deque
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import csv
+import os
 
 
 # =========================
@@ -57,6 +59,13 @@ def main():
 
     def preprocess(state):
         return np.array(state).flatten()
+
+        os.makedirs("results", exist_ok = True)
+        os.makedirs("models", exist_ok = True)
+
+        with open("results/training_rewards.csv", "w", newline = "") as file:
+            writer = csv.writer(file)
+            writer.writerow(["episode", "reward", "epsilon"])
 
     for episode in range(50):
 
@@ -118,6 +127,18 @@ def main():
         epsilon = max(EPSILON_MIN, epsilon * EPSILON_DECAY)
 
         print(f"Episode {episode}, Reward: {total_reward}, Epsilon: {epsilon:.3f}")
+
+        with open("results/training_rewards.csv", "a", newline = "") as file:
+            writer = csv.writer(file)
+            writer.writerow([episode, total_reward, epsilon])
+
+        if episode % 10 == 0:
+            torch.save(
+                q_network.state_dict(),
+                "models/dqn_highway.pth"
+            )    
+
+            print("Checkpoint saved")
 
     env.close()
 

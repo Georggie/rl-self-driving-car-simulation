@@ -33,8 +33,9 @@ def main():
 
     model = DQN(state_size, action_size)
 
-    # Later this will load your trained model:
-    # model.load_state_dict(torch.load("models/dqn_highway.pth"))
+    model.load_state_dict(
+        torch.load("models/dqn_highway.pth")
+    )
 
     model.eval()
 
