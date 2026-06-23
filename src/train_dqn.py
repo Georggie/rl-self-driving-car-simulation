@@ -38,7 +38,7 @@ BATCH_SIZE = 64
 MEMORY_SIZE = 50000
 EPSILON = 1.0
 EPSILON_MIN = 0.05
-EPSILON_DECAY = 0.995
+EPSILON_DECAY = 0.99
 
 
 # =========================
@@ -67,7 +67,7 @@ def main():
             writer = csv.writer(file)
             writer.writerow(["episode", "reward", "epsilon"])
 
-    for episode in range(50):
+    for episode in range(500):
 
         state, _ = env.reset()
         state = preprocess(state)
